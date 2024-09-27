@@ -1,0 +1,61 @@
+class Solution {
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+
+        int sourceColor = image[sr][sc];
+        image[sr][sc] = color;
+        std::vector<vector<bool>>visited(image.size(), std::vector<bool>(image[0].size(), false));
+        fillColor(image, sr, sc, color, sourceColor, visited);
+
+        return image;
+        
+    }
+
+    void fillColor(std::vector<vector<int>> &image, int sr, int sc, int color, int sourceColor,
+    std::vector<vector<bool>>&visited){
+        std::vector<pair<int,int>> next = {{0,1},{0,-1},{-1,0},{1,0}};
+        
+        for(int i = 0; i < next.size(); i++){
+                int nextRow = sr+next[i].first;
+                int nextCol = sc+next[i].second;
+                if(isSafe(nextRow, nextCol, image) && !visited[nextRow][nextCol]) {
+                    if(image[nextRow][nextCol] == sourceColor) {
+                        image[nextRow][nextCol] = color;
+                        visited[nextRow][nextCol] = true;
+                        fillColor(image, nextRow, nextCol, color, sourceColor, visited);
+                    }
+                    
+                }
+
+            }
+    }
+
+    bool isSafe(int row, int col, vector<vector<int>>&image){
+        if(row >=0 && col >=0 && row < image.size() && col < image[0].size()) {
+            return true;
+        }
+
+        return false;
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+You are given an image represented by an m x n grid of integers image, where image[i][j] represents the pixel value of the image. You are also given three integers sr, sc, and color. Your task is to perform a flood fill on the image starting from the pixel image[sr][sc].
+
+To perform a flood fill:
+
+Begin with the starting pixel and change its color to color.
+Perform the same process for each pixel that is directly adjacent (pixels that share a side with the original pixel, either horizontally or vertically) and shares the same color as the starting pixel.
+Keep repeating this process by checking neighboring pixels of the updated pixels and modifying their color if it matches the original color of the starting pixel.
+The process stops when there are no more adjacent pixels of the original color to update.
+Return the modified image after performing the flood fill.
+
