@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int minimumOperationsToMakeEqual(int x, int y) {
+        
+        if(x < y)
+            return y-x;
+
+        std::queue<pair<int,int>> q;
+        q.push({x,0});
+
+        set<int> seen;
+     
+        while(!q.empty()){
+
+            pair p1 = q.front();
+            q.pop();
+            
+            if(p1.first == y){
+                return p1.second;
+            }
+
+            int nextStepCount = p1.second + 1;
+            int currNum = p1.first;
+            if(seen.find(currNum) == seen.end()){
+                seen.insert(currNum);
+                if(currNum % 11 == 0){
+                    q.push({currNum/11, nextStepCount});
+                }
+                if(p1.first % 5 == 0){
+                    q.push({currNum/5, nextStepCount});
+                }
+                q.push({currNum-1, nextStepCount});
+                q.push({currNum+1, nextStepCount});
+            }
+        }
+
+        return -1;
+    }
+};
+
+
+
+
+You are given two positive integers x and y.
+
+In one operation, you can do one of the four following operations:
+
+1. Divide x by 11 if x is a multiple of 11.
+2. Divide x by 5 if x is a multiple of 5.
+3. Decrement x by 1.
+4. Increment x by 1.
+Return the minimum number of operations required to make x and y equal.
+
