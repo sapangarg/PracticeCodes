@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int partitionString(string s) {
+        
+        unordered_map<char, int> lastOccurance;
+        int start = 0,  partition = 0; 
+        lastOccurance[s[0]] = 0;
+        for(int i = 0; i < s.size(); i++){
+            if(lastOccurance.find(s[i]) != lastOccurance.end() && lastOccurance[s[i]] >= start){
+                start = i;
+                partition++;
+            } 
+            lastOccurance[s[i]] = i;
+        }
+    
+       return partition;
+    }
+};
