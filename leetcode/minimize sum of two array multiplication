@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int minProductSum(vector<int>& nums1, vector<int>& nums2) {
+        
+        sort(nums1.begin(), nums1.end());
+        sort(nums2.begin(), nums2.end(), [](const int &a, const int &b){
+            return a > b;
+        });
+
+        long sum = 0;
+        for(int i = 0; i < nums1.size(); ++i){
+            sum += (nums1[i] * nums2[i]);
+        }
+
+        return sum;
+
+    }
+};
+
+
+this can be also done by adding the elements of second array in priority queue and the nmultiplying the top with nums1 element from 0th position. though it'll have same run time but it'll take extra space. 
