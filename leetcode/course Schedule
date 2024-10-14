@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        
+        std::vector<vector<int>>prereq(numCourses);
+        std::vector<int> indegree(numCourses);
+        for(auto &p:prerequisites) {
+            prereq[p[1]].push_back(p[0]);
+            indegree[p[0]]++;
+        }
+
+        std::queue<int>courses;
+        for(int i = 0; i < indegree.size(); i++){
+            if(indegree[i] == 0) {
+                courses.push(i);
+            }
+        }
+
+        int coursesTaken =0;
+        while(!courses.empty()) {
+            int currCourse = courses.front();
+            courses.pop();
+            coursesTaken++;
+            for(int i = 0 ; i < prereq[currCourse].size(); i++) {
+                if(--indegree[prereq[currCourse][i]] == 0){
+                    courses.push(prereq[currCourse][i]);
+                }
+            }
+        }
+
+        return coursesTaken == numCourses;
+    }
+};
