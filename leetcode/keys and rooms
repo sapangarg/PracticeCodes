@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+        
+        std::set<int> visited;
+        std::queue<int> keys;
+        keys.push(0);
+        visited.insert(0);
+        int roomsOpened = 1;
+        while(!keys.empty()){
+            int currKey = keys.front();
+            keys.pop(); 
+            for(auto key : rooms[currKey]){
+                if(visited.find(key) == visited.end()) {
+                    visited.insert(key);
+                    keys.push(key);
+                    roomsOpened++;
+                }      
+            }
+        }
+
+        return roomsOpened == rooms.size() ? true : false;
+    }
+};
