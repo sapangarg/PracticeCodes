@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        std::vector<vector<pair<int,int>>> connections(n);
+
+        for(std::vector<int> &f : flights) {
+            connections[f[0]].push_back({f[1], f[2]});
+        }
+        std::queue<pair<int,int>> traverse;
+        int hops = 0, answer = INT_MAX;
+        traverse.push({src,0});
+        while(!traverse.empty()) {
+            int queueSize = traverse.size();
+            while(queueSize--) {
+                pair currStop = traverse.front();
+                traverse.pop();
+                if(currStop.first == dst){
+                    answer = min(answer, currStop.second);
+                }
+                for(auto &c : connections[currStop.first]){
+                    if(currStop.second+c.second < answer) {
+                        traverse.push({c.first, c.second+currStop.second});
+                    }
+                }
+            }
+
+            if(hops++ > k){
+                break;
+            }
+        }
+        return answer == INT_MAX ? -1 : answer;
+    }
+};
+
+This is giving TLE. what can be done to improve the RT.
