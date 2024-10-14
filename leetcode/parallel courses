@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int minimumSemesters(int n, vector<vector<int>>& relations) {
+          
+        std::vector<vector<int>> prereq(n+1);
+        std::vector<int> inDegree(n+1, 0);
+        
+        for(auto r : relations) {
+            prereq[r[0]].push_back(r[1]);
+            inDegree[r[1]]++;
+        } 
+        
+        
+        queue<int> courseTaken;
+        int semesterCount = 0; 
+        
+        for(int i = 1 ; i <= n; i++) {
+            if(inDegree[i] == 0) { 
+                courseTaken.push(i);
+            }
+        }
+        
+        
+        while(!courseTaken.empty()){ 
+           int queueSize = courseTaken.size();
+           for(int j = 0 ; j < queueSize; j++) {
+              int currentCourse = courseTaken.front();
+              courseTaken.pop(); 
+               --n;
+              for(auto course : prereq[currentCourse]) { 
+                if(--inDegree[course] == 0) {
+                    courseTaken.push(course);
+                }
+              }
+            }
+            semesterCount++;  
+        }
+        
+        return n==0 ? semesterCount : -1 ;
+    }
+};
