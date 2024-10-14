@@ -1,0 +1,67 @@
+class Solution {
+public:
+    int openLock(vector<string>& deadends, string target) {
+        if(target == "0000") {
+            return 0;
+        }
+
+        std::queue<pair<string,int>> nextPermutation;
+        nextPermutation.push({"0000", 0});
+        std::set<string> visited;
+        int minSteps = INT_MAX;
+        std::set<string> deadEnd;
+        for(auto d : deadends){
+            if(d == "0000") {
+                return -1;
+            }
+            deadEnd.insert(d);
+        } 
+        
+        while(!nextPermutation.empty()){
+            
+            pair currentPair = nextPermutation.front();
+            nextPermutation.pop();
+            string currentCombination = currentPair.first;
+            int currSteps = currentPair.second;
+            if(deadEnd.find(currentCombination) != deadEnd.end() || visited.find(currentCombination) != visited.end()) {
+                continue;
+            }
+            
+            if(currentCombination == target) {
+                return currSteps;
+            }
+            
+            visited.insert(currentCombination);
+            
+            for(int i = 0 ; i < 4 ; i++) {
+                nextPermutation.push({getNewCombinationAdd(currentCombination, i), currSteps+1});
+                nextPermutation.push({getNewCombinationsub(currentCombination, i), currSteps+1});
+            }
+        }
+        
+        return (minSteps == INT_MAX) ? -1 : minSteps;
+    }
+    
+     
+    string getNewCombinationAdd(string current, int position) {
+        if(current[position] == '9') {
+            current[position] = '0';
+        }
+        else {
+            current[position] += 1;
+        }
+        return current;
+    }
+                            
+    string getNewCombinationsub(string current, int position){
+        if(current[position] == '0') {
+            current[position] = '9';
+        }
+        else {
+            current[position] -= 1;
+        }
+        
+        return current;
+    }
+    
+};
