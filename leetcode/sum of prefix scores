@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<int> sumPrefixScores(vector<string>& words) {
+        
+        std::unordered_map<string, int> frequency;
+
+        for(string &w : words) {
+            getPrefixFrequency(w, frequency);
+        }
+
+        std::vector<int> result;
+        for(string &w : words){
+            int prefixCount = 0;
+            string temp = "";
+            for(int i =0; i < w.size(); i++){
+                temp += w[i];
+                prefixCount += frequency[temp];
+            }
+            result.push_back(prefixCount);
+        }
+
+        return result;
+    }
+
+    void getPrefixFrequency(string &w, std::unordered_map<string,int> &frequency) {
+        string temp = "";
+        for(int i =0; i < w.size(); i++){
+            temp += w[i];
+            frequency[temp]++;
+        }
+    }
+};
