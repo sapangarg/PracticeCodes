@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        
+        std::set<string> possibleWords;
+        for(string &w : wordList){
+            possibleWords.insert(w);
+        }
+
+        if(possibleWords.find(endWord) == possibleWords.end()) {
+            return 0;
+        }
+        
+        int numSteps = 1;
+        std::queue<string> nextWord;
+        nextWord.push(beginWord);
+        while(!nextWord.empty()){
+            int queueSize = nextWord.size();
+            while(queueSize--){
+                string currWord = nextWord.front();
+                nextWord.pop();
+                std::vector<string> words = getPossibleWords(currWord, possibleWords);
+                for(auto &w : words) {
+                    if(w == endWord){
+                        return numSteps+1;
+                    } else {
+                        nextWord.push(w);
+                    }
+                }
+            }
+            numSteps++;
+        }
+        return 0;
+    }
+
+    std::vector<string> getPossibleWords(string &currWord, std::set<string> &possible) {
+        std::vector<string> result;
+        for(int i =0; i<currWord.size(); i++) {
+            char c = currWord[i];
+            for(char j = 'a'; j <= 'z'; j++) {
+                 currWord[i] = j;
+                 if(possible.find(currWord) != possible.end()) {
+                    result.push_back(currWord);
+                    possible.erase(currWord);
+                 }
+            }
+            currWord[i] = c;
+        }
+        return result;
+    }
+};
