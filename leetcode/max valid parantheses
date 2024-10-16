@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        std::stack<int> toKeepOpeningParan;
+        toKeepOpeningParan.push(-1);
+        int maxLength = 0;
+        for(int i = 0; i < s.size(); i++) {
+            if(s[i] == '('){
+                toKeepOpeningParan.push(i);
+            } else{ 
+                toKeepOpeningParan.pop();
+                if(toKeepOpeningParan.empty()){
+                    toKeepOpeningParan.push(i);
+                } else{
+                    maxLength = max(maxLength, i-toKeepOpeningParan.top());
+                }
+                
+            }
+        }
+        return maxLength;
+    }
+};
+
+we need to store the index of last invalid string on top of stack to get the maxlength.
