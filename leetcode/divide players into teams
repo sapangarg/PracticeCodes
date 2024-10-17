@@ -1,0 +1,39 @@
+class Solution {
+public:
+    long long dividePlayers(vector<int>& skill) {
+        if(skill.size()%2 != 0){
+            return -1;
+        }
+
+      unordered_map<int,int> frequency;
+      int n = skill.size();
+      int skillSum = 0;
+      for(int &s:skill) {
+        frequency[s]++;
+        skillSum += s;
+      }
+
+      if(skillSum % (n/2) != 0) {
+        return -1;
+      }
+
+      long long chemistry = 0;
+      int targetSkill = skillSum / (n/2);
+      for(auto &f : frequency){
+        int counterSkill = targetSkill - f.first;
+
+        if(frequency.find(counterSkill) == frequency.end() || frequency[counterSkill] != f.second){
+            return -1;
+        }
+         
+        chemistry += counterSkill * (long long)f.first * (long long)f.second;
+
+      }
+
+        return chemistry/2;
+    }
+};
+
+
+Note : 1 nlogn solution is to sort and use two pointers. 
+  2. we have to return the half of total chemistry because we are calculating it twice for each pair.
