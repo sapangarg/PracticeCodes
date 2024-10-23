@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<vector<int>> intervalIntersection(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
+        std::vector<vector<int>> result;
+        if(firstList.size() ==0 || secondList.size() == 0){
+            return result;
+        }
+
+        sort(firstList.begin(), firstList.end());
+        sort(secondList.begin(), secondList.end());
+
+        int firstListIndex = 0, secondListIndex = 0;
+
+        while(firstListIndex < firstList.size() && secondListIndex < secondList.size()){
+            std::vector<int> first = firstList[firstListIndex];
+            std::vector<int> second = secondList[secondListIndex];
+
+             
+            int startInterval = std::max(first[0], second[0]);
+            int endInterval = std::min(first[1], second[1]);
+            if(startInterval <= endInterval){
+                result.push_back({startInterval, endInterval});
+            }
+            
+
+            if(first[1] < second[1]){
+                firstListIndex++;
+            } else {
+                secondListIndex++;
+            }
+        }
+        return result;
+    }
+};
