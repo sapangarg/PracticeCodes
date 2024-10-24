@@ -1,0 +1,22 @@
+class Solution {
+public:
+    long long maxKelements(vector<int>& nums, int k) {
+        
+        std::priority_queue<long long, vector<long long>> pq;
+
+        for(auto &n : nums){
+            pq.push(n);
+        }
+
+        long long sum = 0;
+        while(k--){
+            int num = pq.top();
+            pq.pop();
+            sum += num;
+            //cout<<ceil(num/3.0)<<endl;
+            pq.push(ceil(num/3.0));
+        }
+
+        return sum;
+    }
+};
