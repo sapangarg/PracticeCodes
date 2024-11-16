@@ -1,0 +1,39 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* prev;
+    Node* next;
+    Node* child;
+};
+*/
+
+class Solution {
+public:
+    Node* flatten(Node* head) {
+        if(!head)
+            return head;
+        Node* tempHead = new Node(0, NULL, head, NULL);
+        dfs(head, tempHead);
+        tempHead->next->prev = NULL;
+        return tempHead->next;
+    }
+
+    Node* dfs(Node* currentNode, Node* previousNode){
+         if(currentNode == NULL){
+            return previousNode;
+         }
+
+         currentNode->prev = previousNode;
+         previousNode->next = currentNode;
+
+         Node* tempNode = currentNode->next;
+         
+         Node* lastNode = dfs(currentNode->child, currentNode);
+         currentNode->child = NULL;
+
+         return dfs(tempNode,lastNode);
+
+    }
+};
